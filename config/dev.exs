@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :rumbl, Rumbl.Repo,
   username: "postgres",
-  password: "setupgres14",
+  password: System.get_env("DATABASE_PASS"),
   hostname: "localhost",
   database: "rumbl_dev",
   show_sensitive_data_on_connection_error: true,
