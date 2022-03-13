@@ -1,27 +1,27 @@
 defmodule RumblWeb.UserController do
-   use RumblWeb, :controller
+  use RumblWeb, :controller
 
-   alias Rumbl.Accounts
-   alias Rumbl.Accounts.User
+  alias Rumbl.Accounts
+  alias Rumbl.Accounts.User
 
-   plug :authenticate when action in [:index, :show]
+  plug :authenticate when action in [:index, :show]
 
-   def new(conn, _params) do
-     changeset = Accounts.change_registration(%User{}, %{})
-     render(conn, "new.html", changeset: changeset)
-   end
+  def new(conn, _params) do
+    changeset = Accounts.change_registration(%User{}, %{})
+    render(conn, "new.html", changeset: changeset)
+  end
 
-   def index(conn, _params) do
-        users = Accounts.list_users()
-        render(conn, "index.html", users: users)
-   end
+  def index(conn, _params) do
+    users = Accounts.list_users()
+    render(conn, "index.html", users: users)
+  end
 
-   def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}) do
     user = Accounts.get_user(id)
     render(conn, "show.html", user: user)
-   end
+  end
 
-   def create(conn, %{"user" => user_params}) do
+  def create(conn, %{"user" => user_params}) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         conn
@@ -32,9 +32,7 @@ defmodule RumblWeb.UserController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
-
-   end
-
+  end
 
   defp authenticate(conn, _opts) do
     if conn.assigns.current_user do
@@ -44,6 +42,6 @@ defmodule RumblWeb.UserController do
       |> put_flash(:error, "You must be logged in to acces that page")
       |> redirect(to: Routes.page_path(conn, :index))
       |> halt()
-   end
+    end
   end
 end
